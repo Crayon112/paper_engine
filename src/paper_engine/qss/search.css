@@ -1,0 +1,32 @@
+.QLineEdit {
+    border: 2px solid #101010;
+    border-radius: 10px;
+    padding: 2px 0;
+    color: #000000;
+
+    font-family: "Microsoft YaHei";
+    font-size: small;
+
+    height: 25px;
+}
+
+.QLineEdit:focus {
+    border: 2px solid #1010ff;
+}
+
+.QPushButton {
+    background-color: #101010;
+    color: #ffffff;
+    border: 2px solid #101010;
+    border-radius: 10px;
+    padding: 2px 5px;
+    font-family: "Microsoft YaHei";
+    font-size: small;
+    margin: 4px 0;
+    height: 25px;
+    width: 100%;
+}
+
+.QPushButton:pressed {
+    color: red;
+}
