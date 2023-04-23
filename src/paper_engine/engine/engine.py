@@ -41,12 +41,12 @@ class MetaEngine(type):
         return cls.registry[name]
 
     @classmethod
-    def search(cls, meta: Meta) -> Set[str]:
+    def search(cls, keyword: str) -> Set[Meta]:
         result = set()
         for engine in cls.registry.values():
             if cls.is_excluded(engine):
                 continue
-            result = result.union(engine.search(meta))
+            result = result.union(engine.search(keyword))
         return result
 
     @classmethod
@@ -97,5 +97,5 @@ class Engine(metaclass=MetaEngine):
             return "https://" + remove_http
 
     @classmethod
-    def search(cls, meta: Meta) -> Set[str]:  # noqa: E501
+    def search(cls, keyword: str) -> Set[Meta]:  # noqa: E501
         return set()

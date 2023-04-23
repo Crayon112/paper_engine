@@ -52,6 +52,8 @@ class SideBar(Widget):
             # 设置居中
             item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
+            item.setSelected(True)
+
             self.items.append(item)
 
         self.layout.addWidget(self.view)

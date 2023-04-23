@@ -1,12 +1,11 @@
-import re
 import requests
 from typing import Set
 
-from .engine import Engine
+# from .engine import Engine
 from ..meta import Meta
 
 
-class BaiduXueShu(Engine):
+class BaiduXueShu:
     """百度学术搜索引擎."""
 
     api = "https://xueshu.baidu.com/s"

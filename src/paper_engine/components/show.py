@@ -2,6 +2,7 @@ from PySide6.QtWidgets import (
     QTableWidget, QTableWidgetItem,
     QHeaderView, QAbstractItemView
 )
+from PySide6.QtCore import Qt
 
 
 class ShowWidget(QTableWidget):
@@ -12,21 +13,6 @@ class ShowWidget(QTableWidget):
         name (str, optional): 组件名称. Defaults to "".
         data (dict, optional): 组件数据. Defaults to None.
         style (str, optional): 组件样式. Defaults to None.
-
-    Note:
-        data 应当至少包含以下字段: res, headers.
-        例如：
-        data = {
-            "res": [
-                ("https://www.google.com", "test", "test"),
-                ("https://www.baidu.com", "test", "test"),
-                ("https://www.bing.com", "test", "test"),
-                ("https://www.yahoo.com", "test", "test"),
-                ("https://www.yandex.com", "test", "test"),
-            ],
-            "headers": ["Website", "Resource", "Status"],
-        }
-
     """
 
     def __init__(
@@ -60,23 +46,33 @@ class ShowWidget(QTableWidget):
 
         # 设置列宽
         header = self.horizontalHeader()
-        header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+
+        # 交互式调整列宽
+        header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
         for i, item in enumerate(self.data.get("result", [])):
             self.insertRow(i)
 
             if isinstance(item, (list, tuple)):
                 for j, text in enumerate(item):
+                    text = str(text)
                     item = QTableWidgetItem(text)
+                    if j == 0:
+                        item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+                    else:
+                        item.setTextAlignment(Qt.AlignmentFlag.AlignLeft)
                     self.setItem(i, j, item)
             else:
+                item = str(item)
                 item = QTableWidgetItem(item)
+                item.setTextAlignment(Qt.AlignmentFlag.AlignLeft)
                 self.setItem(i, 0, item)
 
         # 禁止编辑
         self.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
 
-        # 多选
+        # 多选行
+        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.setSelectionMode(QAbstractItemView.SelectionMode.MultiSelection)
 
         # 不显示网格

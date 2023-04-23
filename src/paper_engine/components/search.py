@@ -29,5 +29,8 @@ class SearchWidget(Widget):
         self.search_btn = QPushButton("Search", self)
         self.layout.addWidget(self.search_btn)
 
+        # 绑定 Enter 与按键点击事件
+        self.search_box.returnPressed.connect(self.search_btn.click)
+
         if self.style:
             self.setStyleSheet(self.style)

@@ -10,13 +10,14 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QProgressBar,
 )
+from typing import Set
 
 from .components import (
     Widget, SideBar, SearchWidget, ShowWidget,
 )
 from .downloader import download
 from .engine import MetaEngine
-from .utils import build_meta
+from .workers import SearchThread
 
 
 logger = logging.getLogger("APP")
@@ -48,6 +49,7 @@ class MainApp(QWidget):
         self.setObjectName(name)
         self.data = data or {}
         self.style = self.load_style(style)
+        self.search_thread = SearchThread(self)
         self.setup_ui()
 
     def load_style(self, style: str):
@@ -90,8 +92,8 @@ class MainApp(QWidget):
 
     def download_btn_clicked(self):
         selected_links = [
-            item.text()
-            for item in self.showres.selectedItems()
+            item.text() for item in self.showres.selectedItems()
+            if item.text().startswith("http")
         ]
         if not selected_links:
             return
@@ -106,23 +108,34 @@ class MainApp(QWidget):
         self.progress.setValue(100)
 
     def search_btn_clicked(self):
-        keyword = self.search.search_box.text()
-        meta = build_meta(keyword)
-        result = list(MetaEngine.search(meta))
-        data = {
-            "headers": ["Result"],
-            "result": result,
-        }
+        keywords = self.search.search_box.text().strip()
+        if not keywords:
+            return
+        self.search_thread.set_keywords(keywords)
+        self.search_thread.start()
+        self.search_thread.finished.connect(self.search_finished)
+
+    def search_finished(self, result: Set):
+        data = self._show_mode(result)
         self.showres.update_data(data)
 
+    def _show_mode(self, result):
+        data = {
+            "headers": ["ID", "Title", "Link"],
+            "result": [
+                (i + 1, meta.title, meta.download_link)
+                for i, meta in enumerate(result)
+            ],
+        }
+        return data
 
 class PaperEngine(QMainWindow):
 
     def __init__(
         self,
         name="PaperEngine",
-        width: int = 1100,
-        height: int = 650,
+        width: int = 0,
+        height: int = 0,
         style: str = QSS["PaperEngine"],
     ):
         super().__init__()
@@ -139,7 +152,10 @@ class PaperEngine(QMainWindow):
 
     def setup_ui(self):
         self.setWindowTitle(self.name)
-        self.resize(self.width, self.height)
+        if self.width > 0 and self.height > 0:
+            self.resize(self.width, self.height)
+        else:
+            self.resize(1200, 800)
         self._app_init()
 
     def _app_init(self):
