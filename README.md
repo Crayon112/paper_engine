@@ -4,7 +4,7 @@
 
 ## 依赖
 
-程序使用 [*Python 3.8*](https://www.python.org/downloads/release/python-380/) 作为编程语言，依赖 [*Pyside6*](https://wiki.qt.io/Qt_for_Python) 进行 GUI 窗口设计及实现。程序所处理的文献信息通过 [*requests*](https://requests.readthedocs.io/en/latest/) 进行爬取/收集，文献所设计的元数据通过 [*BeautifulSoup*](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) 对网页进行分析得到。程序对以上依赖的版本所示如下：
+程序使用 [*Python 3.8*](https://www.python.org/downloads/release/python-380/) 作为编程语言，依赖 [*Pyside6*](https://wiki.qt.io/Qt_for_Python) 进行 GUI 窗口设计及实现。程序所处理的文献信息通过 [*requests*](https://requests.readthedocs.io/en/latest/) 进行爬取/收集，文献所涉及的元数据通过 [*BeautifulSoup*](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) 对网页进行分析得到。程序对以上依赖的版本所示如下：
 
 ```txt
 requests==2.28.2
