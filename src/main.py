@@ -1,5 +1,5 @@
 import sys
-from src.paper_engine.app import PaperEngine
+from paper_engine.app import PaperEngine
 from PySide6.QtWidgets import QApplication
 
 import logging

@@ -22,4 +22,4 @@ pip install -r requirements.txt
 
 ## 运行
 
-使用 `python main.py` 运行程序，你就可以体验啦  ^ - ^ !
+使用 `python src/main.py` 运行程序，你就可以体验啦  ^ - ^ !
